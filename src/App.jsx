@@ -10,6 +10,7 @@ function App() {
   const [editedVideo, setEditedVideo] = useState(null);
 
   const [frames, setFrames] = useState([]);
+
   console.log(frames);
 
   const ffmpegRef = useRef(new FFmpeg({ log: true }));
@@ -67,8 +68,7 @@ function App() {
   }, []);
 
   return (
-    <>
-      <h1>OK</h1>
+    <div className="">
       {isReady && (
         <VideoTrimmerReact
           videoUrl={import.meta.env.VITE_FILE_URI}
@@ -112,12 +112,35 @@ function App() {
         </a>
       )}
 
-      {frames.map((src) => (
-        <img src={src} />
-      ))}
+      <div className="py-5 border-2 border-black shadow-xl rounded-lg flex items-center overflow-x-auto w-full pt-6">
+        {frames.map((src, idx) => (
+          <div
+            key={idx}
+            className="overflow-hidden h-32 w-32 flex-grow-0 flex-shrink-0 flex-auto"
+          >
+            <img src={src} className="max-w-full" />
+          </div>
+        ))}
+        {frames.map((src, idx) => (
+          <div
+            key={idx}
+            className="overflow-hidden h-32 w-32 flex-grow-0 flex-shrink-0 flex-auto"
+          >
+            <img src={src} className="max-w-full" />
+          </div>
+        ))}
+        {frames.map((src, idx) => (
+          <div
+            key={idx}
+            className="overflow-hidden h-32 w-32 flex-grow-0 flex-shrink-0 flex-auto"
+          >
+            <img src={src} className="max-w-full" />
+          </div>
+        ))}
+      </div>
 
       <button onClick={fetchDataFrames}>Fetch Data Frames</button>
-    </>
+    </div>
   );
 }
 
