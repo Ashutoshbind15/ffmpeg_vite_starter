@@ -4,14 +4,16 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import VideoTrimmerReact from "./components/VideoTrimmerReact";
 import ReactPlayer from "react-player";
+import TempPlayer from "./tempplayer";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
   const [editedVideo, setEditedVideo] = useState(null);
-
   const [frames, setFrames] = useState([]);
 
-  console.log(frames);
+  useEffect(() => {
+    if (isReady) fetchDataFrames();
+  }, [isReady]);
 
   const ffmpegRef = useRef(new FFmpeg({ log: true }));
 
@@ -58,7 +60,7 @@ function App() {
       const src = URL.createObjectURL(
         new Blob([data.buffer], { type: "image/jpeg" })
       );
-      setFrames((prev) => [...prev, src]);
+      setFrames((prev) => [...prev, { url: src, id: i }]);
       console.log(src);
     }
   };
@@ -70,18 +72,14 @@ function App() {
   return (
     <div className="">
       {isReady && (
-        <VideoTrimmerReact
+        <TempPlayer
           videoUrl={import.meta.env.VITE_FILE_URI}
-          onSelectRange={async (s, e) => {
+          onHandleSubmit={async (s, e) => {
             const ffmpeg = ffmpegRef.current;
             await ffmpeg.writeFile(
               "input.mp4",
               await fetchFile(import.meta.env.VITE_FILE_URI)
             );
-
-            // await ffmpeg.run('-i', 'input.mp4', '-ss', '00:00:10', '-t', '00:00:20', '-c', 'copy', 'output.mp4');
-            // await ffmpeg.run('-i', inputVideo, '-ss', startTime, '-to', endTime, '-c', 'copy', outputTrimmedVideo);
-            // await ffmpeg.run('-i', inputVideo, '-ss', startTime, '-t', duration, '-c', 'copy', outputTrimmedVideo);
 
             await ffmpeg.exec([
               "-ss",
@@ -102,44 +100,15 @@ function App() {
             );
             setEditedVideo(vstr);
           }}
+          frames={frames}
         />
       )}
       {editedVideo && <ReactPlayer url={editedVideo} controls />}
-
       {editedVideo && (
         <a href={editedVideo} download={"a.mp4"}>
           Download
         </a>
       )}
-
-      <div className="py-5 border-2 border-black shadow-xl rounded-lg flex items-center overflow-x-auto w-full pt-6">
-        {frames.map((src, idx) => (
-          <div
-            key={idx}
-            className="overflow-hidden h-32 w-32 flex-grow-0 flex-shrink-0 flex-auto"
-          >
-            <img src={src} className="max-w-full" />
-          </div>
-        ))}
-        {frames.map((src, idx) => (
-          <div
-            key={idx}
-            className="overflow-hidden h-32 w-32 flex-grow-0 flex-shrink-0 flex-auto"
-          >
-            <img src={src} className="max-w-full" />
-          </div>
-        ))}
-        {frames.map((src, idx) => (
-          <div
-            key={idx}
-            className="overflow-hidden h-32 w-32 flex-grow-0 flex-shrink-0 flex-auto"
-          >
-            <img src={src} className="max-w-full" />
-          </div>
-        ))}
-      </div>
-
-      <button onClick={fetchDataFrames}>Fetch Data Frames</button>
     </div>
   );
 }
