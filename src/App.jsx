@@ -60,7 +60,6 @@ function App() {
         new Blob([data.buffer], { type: "image/jpeg" })
       );
       setFrames((prev) => [...prev, { url: src, id: i }]);
-      console.log(src);
     }
   };
 
@@ -92,7 +91,6 @@ function App() {
               "output.mp4",
             ]);
             const data = await ffmpeg.readFile("output.mp4");
-            console.log(data);
 
             const vstr = URL.createObjectURL(
               new Blob([data.buffer], { type: "video/mp4" })

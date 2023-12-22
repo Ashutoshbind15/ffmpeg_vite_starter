@@ -42,7 +42,11 @@ const TempPlayer = ({
         className="w-4/5"
       />
 
-      <VideoSliderPreview frames={frames} />
+      <VideoSliderPreview
+        frames={frames}
+        progress={played}
+        setProgress={setPlayed}
+      />
 
       <div className="flex items-center py-5">
         <button
