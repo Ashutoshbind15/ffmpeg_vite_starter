@@ -28,8 +28,9 @@ const TempPlayer = ({
         controls
         onProgress={handleOnProgress}
         config={{ file: { attributes: { crossOrigin: "anonymous" } } }}
-        progressInterval={100}
+        progressInterval={1000}
         className="w-3/5"
+        playing={true}
       />
 
       <input
@@ -45,7 +46,10 @@ const TempPlayer = ({
       <VideoSliderPreview
         frames={frames}
         progress={played}
-        setProgress={setPlayed}
+        setProgress={(p) => {
+          setPlayed(p);
+          videoRef.current.seekTo(p, "fraction");
+        }}
       />
 
       <div className="flex items-center py-5">

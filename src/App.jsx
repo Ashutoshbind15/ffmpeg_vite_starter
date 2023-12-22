@@ -3,7 +3,7 @@ import "./App.css";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import ReactPlayer from "react-player";
-import VidePlayer from "./components/VideoPlayer";
+import VideoPlayer from "./components/VideoPlayer";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -54,7 +54,7 @@ function App() {
 
     // read each frame, convert to a src for a set of img tags
 
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i <= 11; i++) {
       const data = await ffmpeg.readFile(`frames${i}.jpg`);
       const src = URL.createObjectURL(
         new Blob([data.buffer], { type: "image/jpeg" })
@@ -70,7 +70,7 @@ function App() {
   return (
     <div className="">
       {isReady && (
-        <VidePlayer
+        <VideoPlayer
           videoUrl={import.meta.env.VITE_FILE_URI}
           onHandleSubmit={async (s, e) => {
             const ffmpeg = ffmpegRef.current;

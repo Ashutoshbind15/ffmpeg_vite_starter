@@ -2,58 +2,67 @@ import React from "react";
 
 const VideoSliderPreview = ({
   frames,
-  framesPerSegment = 5,
+  framesPerSegment = 4,
   progress,
   setProgress,
 }) => {
   const numberOfFrames = frames.length;
-
-  // calculate the segment number from the prog which comes in as a fraction
-
-  const segmentNumber = Math.floor(
-    (progress * numberOfFrames) / framesPerSegment
-  );
-
-  // calculate the start and end frames for the segment
+  const frameNumber = Math.floor(progress * numberOfFrames);
+  const segmentNumber = Math.floor(frameNumber / framesPerSegment);
 
   const startFrame = segmentNumber * framesPerSegment;
   const endFrame = (segmentNumber + 1) * framesPerSegment;
 
-  // slice the frames array to get the frames for the segment
-
   const segmentFrames = frames.slice(startFrame, endFrame);
-  const currentFrame = frames[Math.floor(progress * numberOfFrames)];
   const numberOfSegs = Math.ceil(numberOfFrames / framesPerSegment);
 
-  const currentFrameIndex = Math.floor(progress * numberOfFrames);
+  // progress in the segment in percentage using the progress and frames per segment
 
-  // progress in the segment in percentage
+  const percByEachSegment = 1 / numberOfSegs;
+  const percByEachFrame = 1 / framesPerSegment;
+  const idxOfFrameInSegment = frameNumber % framesPerSegment;
 
-  const segmentProgress =
-    ((progress * numberOfFrames) % framesPerSegment) / framesPerSegment;
+  // const segmentProgress = (progress % percByEachSegment) / percByEachSegment;
+  // const segmentProgress = (frameNumber % framesPerSegment) / framesPerSegment;
 
   const contributionOfEachSegment = 1 / numberOfSegs;
 
-  // the total progress = (segnum)*contribeach + progress * contribeach -> (segnum + segprog)* contribution of each
+  // const totalProgress =
+  //   (segmentNumber + segmentProgress) * contributionOfEachSegment;
 
-  const totalProgress =
-    (segmentNumber + segmentProgress) * contributionOfEachSegment;
-  console.log(
-    progress,
-    segmentProgress,
-    currentFrameIndex,
-    segmentNumber,
-    totalProgress
-  );
+  const y = framesPerSegment / numberOfFrames;
+  const x = progress % y;
+  const segmentProgress = x / y;
+
+  // console.log("Segment Number", segmentNumber);
+  // console.log("Frame Number", frameNumber);
+  // console.log("segment progress", segmentProgress);
+
   const handleSegmentProgress = (p) => {
     // calculate the overall progress using the segment number and segment progress and total number of segments
     // say we got 4 segs -> each contribute to 25% then
     // contrib of each = 1/(numseg)
+    // setProgress(totalProgress);
+
+    console.log(p.target.value);
+
+    const a = segmentNumber;
+    const b = p.target.value;
+
+    console.log("a", a);
+    console.log("b", +b);
+    console.log("y", y);
+
+    const pg = (a + +b) * y;
+
+    // setProgress(progress);
+    console.log("progress", pg, "actual progress", progress);
+    setProgress(pg);
   };
 
   return (
     <>
-      <div className="border-2 border-black shadow-xl rounded-lg flex items-center overflow-x-auto w-full pt-6">
+      <div className="border-2 border-black shadow-xl rounded-lg flex items-center overflow-x-auto w-full pt-6 my-6">
         {frames.map((frame, idx) => (
           <div
             key={idx}
