@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
-import VideoTrimmerReact from "./components/VideoTrimmerReact";
 import ReactPlayer from "react-player";
-import TempPlayer from "./tempplayer";
+import VidePlayer from "./components/VideoPlayer";
 
 function App() {
   const [isReady, setIsReady] = useState(false);
@@ -72,7 +71,7 @@ function App() {
   return (
     <div className="">
       {isReady && (
-        <TempPlayer
+        <VidePlayer
           videoUrl={import.meta.env.VITE_FILE_URI}
           onHandleSubmit={async (s, e) => {
             const ffmpeg = ffmpegRef.current;

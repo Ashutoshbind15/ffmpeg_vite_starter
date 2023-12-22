@@ -2,10 +2,13 @@ import React from "react";
 
 const VideoSliderPreview = ({ frames, framesInView = 4, currentTimeStamp }) => {
   return (
-    <div className="flex items-center overflow-x-auto w-full">
+    <div className="border-2 border-black shadow-xl rounded-lg flex items-center overflow-x-auto w-full pt-6">
       {frames.map((frame, idx) => (
-        <div className="w-32 h-32 overflow-hidden flex-grow-0 flex-shrink-0 flex-auto">
-          <img src={frame?.url} alt={`frame_${idx}`} className="max-w-full" />
+        <div
+          key={idx}
+          className="overflow-hidden w-60 flex-grow-0 flex-shrink-0 flex-auto"
+        >
+          <img src={frame?.url} className="max-w-full" />
         </div>
       ))}
     </div>

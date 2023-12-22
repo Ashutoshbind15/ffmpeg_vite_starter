@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import ReactPlayer from "react-player";
+import VideoSliderPreview from "./VideSliderPreview";
 
 const TempPlayer = ({
   onHandleSubmit,
@@ -41,16 +42,7 @@ const TempPlayer = ({
         className="w-4/5"
       />
 
-      <div className="border-2 border-black shadow-xl rounded-lg flex items-center overflow-x-auto w-full pt-6">
-        {frames.map((frame, idx) => (
-          <div
-            key={idx}
-            className="overflow-hidden w-60 flex-grow-0 flex-shrink-0 flex-auto"
-          >
-            <img src={frame?.url} className="max-w-full" />
-          </div>
-        ))}
-      </div>
+      <VideoSliderPreview frames={frames} />
 
       <div className="flex items-center py-5">
         <button

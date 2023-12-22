@@ -5,7 +5,6 @@ import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/UI/Layout.jsx";
 import "./index.css";
-import TempPlayer from "./tempplayer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -15,10 +14,6 @@ const router = createBrowserRouter([
       {
         path: "/app",
         element: <App />,
-      },
-      {
-        path: "/temp",
-        element: <TempPlayer />,
       },
     ],
   },
