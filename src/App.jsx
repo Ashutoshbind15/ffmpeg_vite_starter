@@ -9,6 +9,7 @@ function App() {
   const [isReady, setIsReady] = useState(false);
   const [editedVideo, setEditedVideo] = useState(null);
   const [frames, setFrames] = useState([]);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     if (isReady) fetchDataFrames();
@@ -30,6 +31,9 @@ function App() {
         "application/wasm"
       ),
     });
+
+    console.log("Ready");
+
     setIsReady(true);
   };
 
@@ -54,7 +58,9 @@ function App() {
 
     // read each frame, convert to a src for a set of img tags
 
-    for (let i = 1; i <= 11; i++) {
+    const duration = videoRef.current.getDuration();
+
+    for (let i = 1; i <= duration; i++) {
       const data = await ffmpeg.readFile(`frames${i}.jpg`);
       const src = URL.createObjectURL(
         new Blob([data.buffer], { type: "image/jpeg" })
@@ -98,6 +104,7 @@ function App() {
             setEditedVideo(vstr);
           }}
           frames={frames}
+          videoRef={videoRef}
         />
       )}
       {editedVideo && <ReactPlayer url={editedVideo} controls />}

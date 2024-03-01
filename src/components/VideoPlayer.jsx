@@ -6,10 +6,12 @@ const TempPlayer = ({
   onHandleSubmit,
   videoUrl = import.meta.env.VITE_FILE_URI,
   frames = [],
+  videoRef,
 }) => {
-  const videoRef = useRef(null);
   const [played, setPlayed] = useState(0);
   const [selectStart, setSelectStart] = useState(true);
+
+  console.log(videoRef?.current?.getDuration());
 
   const handleOnProgress = (p) => {
     setPlayed(p.played);
@@ -31,6 +33,7 @@ const TempPlayer = ({
         progressInterval={1000}
         className="w-3/5"
         playing={true}
+        onBufferEnd={() => {}}
       />
 
       <input
